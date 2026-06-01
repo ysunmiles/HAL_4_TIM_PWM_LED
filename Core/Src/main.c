@@ -18,6 +18,7 @@
 /* USER CODE END Header */
 /* Includes ------------------------------------------------------------------*/
 #include "main.h"
+#include "tim.h"
 #include "gpio.h"
 
 /* Private includes ----------------------------------------------------------*/
@@ -86,17 +87,25 @@ int main(void)
 
   /* Initialize all configured peripherals */
   MX_GPIO_Init();
+  MX_TIM2_Init();
   /* USER CODE BEGIN 2 */
   OLED_Init();
   OLED_Clear();
+
+  OLED_ShowString(1, 1, "PWM Value:");
+  HAL_TIM_PWM_Start(&htim2, TIM_CHANNEL_1);
   /* USER CODE END 2 */
 
   /* Infinite loop */
   /* USER CODE BEGIN WHILE */
   while (1)
   {
-      OLED_ShowString(2, 1, "bobo chuchu =3=");
-      HAL_Delay(1000);
+    for (uint16_t pwm_value = 0; pwm_value <= 99; pwm_value += 1)
+    {
+      __HAL_TIM_SET_COMPARE(&htim2, TIM_CHANNEL_1, pwm_value);
+      OLED_ShowNum(2, 3, pwm_value, 3);
+      HAL_Delay(30);
+    }
 
     /* USER CODE END WHILE */
 
