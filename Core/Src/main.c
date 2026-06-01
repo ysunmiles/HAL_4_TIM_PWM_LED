@@ -107,6 +107,12 @@ int main(void)
       HAL_Delay(30);
     }
 
+    for (uint16_t pwm_value = 99; pwm_value >= 0; pwm_value -= 1)
+    {
+      __HAL_TIM_SET_COMPARE(&htim2, TIM_CHANNEL_1, pwm_value);
+      OLED_ShowNum(2, 3, pwm_value, 3);
+      HAL_Delay(30);
+    }
     /* USER CODE END WHILE */
 
     /* USER CODE BEGIN 3 */
